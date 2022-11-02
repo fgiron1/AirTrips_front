@@ -11,9 +11,10 @@ const useCities = () => {
     axios.get('https://countriesnow.space/api/v0.1/countries').then(res => {
       const citiesRes = res.data.data
       setCities(
-        citiesRes.map(city => {
-          return { label: city.country, value: city.country }
-        })
+        citiesRes.map(city => ({
+          label: city.country,
+          value: city.country
+        }))
       )
       setLoading(false)
     })

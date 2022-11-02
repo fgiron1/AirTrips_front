@@ -1,19 +1,41 @@
-import { InputPicker } from 'rsuite'
-import SpinnerIcon from '@rsuite/icons/legacy/Spinner'
+/* eslint-disable react/prop-types */
+import { useEffect } from 'react'
+import { InputPicker, Loader } from 'rsuite'
 import { useCities } from '../hooks/useCities'
 
-// eslint-disable-next-line react/prop-types
-const CountrySelect = ({ placeholder }) => {
-  const [data, loading, fetchCities] = useCities()
+// const data = [
+//   'Eugenia',
+//   'Bryan',
+//   'Linda',
+//   'Nancy',
+//   'Lloyd',
+//   'Alice',
+//   'Julia',
+//   'Albert',
+//   'Louisa',
+//   'Lester',
+//   'Lola',
+//   'Lydia',
+//   'Hal',
+//   'Hannah',
+//   'Harriet',
+//   'Hattie',
+//   'Hazel',
+//   'Hilda'
+// ].map(item => ({ label: item, value: item }))
+
+const CountrySelect = ({ ...props }) => {
+  const [cities, loading, fetchCities] = useCities()
+
+  useEffect(() => {
+    fetchCities()
+  }, [])
 
   return (
     <InputPicker
-      data={data}
-      size='lg'
-      appearance='default'
-      placeholder={placeholder}
+      {...props}
+      data={cities}
       block
-      onClick={fetchCities}
       renderMenu={menu => {
         if (loading) {
           return (
@@ -24,7 +46,7 @@ const CountrySelect = ({ placeholder }) => {
                 textAlign: 'center'
               }}
             >
-              <SpinnerIcon spin /> Loading...
+              <Loader /> Loading...
             </p>
           )
         }

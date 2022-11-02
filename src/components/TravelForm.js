@@ -1,11 +1,20 @@
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { DateRangePicker, DatePicker } from 'rsuite'
-import 'rsuite/dist/rsuite.css'
-import startOfWeek from 'date-fns/startOfWeek'
-import endOfWeek from 'date-fns/endOfWeek'
-import addDays from 'date-fns/addDays'
-import startOfMonth from 'date-fns/startOfMonth'
+/* eslint-disable no-debugger */
+/* eslint-disable indent */
 import { useState } from 'react'
+import { useField } from '../hooks/useField'
+import {
+  Button,
+  Col,
+  DatePicker,
+  DateRangePicker,
+  Form,
+  Schema,
+  Grid,
+  Radio,
+  RadioGroup,
+  Row
+} from 'rsuite'
+import { startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth } from 'date-fns'
 import CountrySelect from './CountrySelect'
 import AngleRightIcon from '@rsuite/icons/legacy/ArrowRightLine'
 
@@ -22,7 +31,7 @@ const predefinedRanges = [
   },
   {
     label: 'This month',
-    value: [startOfMonth(new Date()), new Date()],
+    value: [startOfMonth(new Date()), endOfMonth(new Date())],
     appearance: 'default'
   },
   {
@@ -39,126 +48,111 @@ const predefinedRanges = [
   }
 ]
 
+const model = Schema.Model({
+  origin: Schema.Types.StringType().isRequired('Origin is required.'),
+  destination: Schema.Types.StringType().isRequired('Destination is required.')
+})
+
 const TravelForm = () => {
   const [oneWayFlight, setOneWayFlight] = useState(false)
-
-  const handleChange = e => {
-    e.persist()
-
-    e.target.value === 'true' ? setOneWayFlight(true) : setOneWayFlight(false)
-  }
+  const origin = useField()
+  const destination = useField()
+  const [date, setDate] = useState()
 
   const handleSubmit = e => {
-    e.preventDefault()
-    console.log(e)
+    console.log({ origin, destination, date })
+  }
+
+  const handleTypeOfFlightChange = val => {
+    if (date !== undefined) {
+      if (Array.isArray(date)) {
+        setDate(date[0])
+      } else {
+        setDate([date, new Date()])
+      }
+    }
+    setOneWayFlight(val)
+  }
+
+  const handleDateChange = val => {
+    setDate(val)
   }
 
   return (
     <Form
-      onSubmit={handleSubmit}
+      layout='horizontal'
+      model={model}
       style={{
-        margin: '0 auto',
+        marginTop: '50px',
         width: '75vw',
         borderRadius: '5px',
-        padding: '10px'
+        padding: '10px',
+        boxShadow: '0 0 50px rgba(0, 0, 0, 0.5)'
       }}
-      className='shadow'
+      onSubmit={handleSubmit}
     >
-      <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Row className='mb-3 mt-2'>
-          <Col>
-            <Form.Group className='' controlId='oneWayFlight'>
-              <Form.Check
-                onChange={handleChange}
-                value='false'
-                inline
-                label='Round trip'
-                name='flightType'
-                type='radio'
+      <Grid fluid>
+        {/* Radio Buttons */}
+        <Row>
+          <RadioGroup name='oneWayFlight' inline>
+            <Radio value={false} onChange={handleTypeOfFlightChange}>
+              Round trip
+            </Radio>
+            <Radio value={true} onChange={handleTypeOfFlightChange}>
+              One way
+            </Radio>
+          </RadioGroup>
+        </Row>
+        {/* Flights data */}
+        <Row>
+          <Col xs={8}>
+            <Form.Group controlId='origin'>
+              <CountrySelect size='lg' placeholder='Origin' {...origin} />
+            </Form.Group>
+          </Col>
+          <Col xs={8}>
+            <Form.Group controlId='destination'>
+              <CountrySelect
+                size='lg'
+                placeholder='Destination'
+                {...destination}
               />
-              <Form.Check
-                onChange={handleChange}
-                value='true'
-                inline
-                label='One way'
-                name='flightType'
-                type='radio'
-              />
+            </Form.Group>
+          </Col>
+          <Col xs={8}>
+            <Form.Group controlId='date'>
+              {// eslint-disable-next-line multiline-ternary
+              oneWayFlight ? (
+                <DatePicker
+                  value={date}
+                  onChange={handleDateChange}
+                  size='lg'
+                  appearance='default'
+                  placeholder='YYYY-MM-DD'
+                  block
+                />
+              ) : (
+                <DateRangePicker
+                  value={date}
+                  onChange={handleDateChange}
+                  size='lg'
+                  appearance='default'
+                  placeholder='YYYY-MM-DD ~ YYY-MM-DD'
+                  ranges={predefinedRanges}
+                  block
+                />
+              )}
             </Form.Group>
           </Col>
         </Row>
-        <Row className='mb-3'>
-          <Col>
-            <CountrySelect placeholder='Origin' />
-            {/* <Form.Control id='origin' placeholder='Origin' /> */}
-          </Col>
-          <Col>
-            {/* <Form.Group className='mb-3' controlId='destination'>
-              <Form.FloatingLabel label='Destination'>
-                <Form.Control id='destination' placeholder='Destination' />
-              </Form.FloatingLabel>
-            </Form.Group> */}
-            <CountrySelect placeholder='Destination' />
-          </Col>
-          <Col>
-            <Form.Group
-              className='mb-3'
-              controlId='departure'
-              style={{ display: 'none' }}
-            >
-              <Form.FloatingLabel label='Departure'>
-                <Form.Control id='departure' placeholder='Departure' />
-              </Form.FloatingLabel>
-            </Form.Group>
-
-            {// eslint-disable-next-line multiline-ternary
-            oneWayFlight ? (
-              <DatePicker
-                size='lg'
-                appearance='default'
-                placeholder='YYYY-MM-DD'
-                block
-              />
-            ) : (
-              <DateRangePicker
-                size='lg'
-                appearance='default'
-                placeholder='YYYY-MM-DD ~ YYY-MM-DD'
-                ranges={predefinedRanges}
-                block
-              />
-            )}
-          </Col>
-        </Row>
-        {/* <Row className='mb-3'>
-          <Col>
-          <Form.Group controlId='filters'>
-              <Form.Check
-                value='false'
-                inline
-                label='Direct fly'
-                name='filters'
-                type='switch'
-              />
-              <Form.Check
-                onChange={handleChange}
-                value='true'
-                inline
-                label='Luggage allowed'
-                name='filters'
-                type='switch'
-              />
-            </Form.Group>
-          </Col>
-        </Row> */}
         <Row>
           <Col>
-            <Button type='submit'>
+            <Button type='submit' appearance='primary'>
               Search <AngleRightIcon />
             </Button>
           </Col>
         </Row>
-      </Container>
+      </Grid>
     </Form>
   )
 }

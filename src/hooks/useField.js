@@ -1,15 +1,14 @@
+/* eslint-disable no-debugger */
 import { useState } from 'react'
 
-const useCities = ({ type, value }) => {
-  const [field, setField] = useState(value)
+const useField = () => {
+  const [value, setvalue] = useState()
 
-  const handleChange = e => {
-    e.preventDefault()
-
-    setField(e.target.value)
+  const onChange = e => {
+    setvalue(e)
   }
 
-  return { field, type, value, handleChange }
+  return { value, onChange }
 }
 
-export { useCities }
+export { useField }
