@@ -13,24 +13,28 @@ const Home = () => {
   const handleSubmit = (value, event) => {
     event.preventDefault()
 
-    console.log(event.target[0].checked)
-
-    if (!origin || !destination) {
-      dispatch(setAlert('You must provide an origin and a destination'))
+    if (!origin || !destination || !dates.departureDate) {
+      dispatch(
+        setAlert(
+          'You must provide an origin, a destination and, at least, a departure date'
+        )
+      )
 
       setTimeout(() => {
         dispatch(hideAlert())
       }, 3000)
     } else {
-      if (!dates.departureDate) {
-        dispatch(setAlert('You must provide at least a departure date'))
+      if (origin === destination) {
+        dispatch(
+          setAlert(
+            'Origin and destination can\'t be the same'
+          )
+        )
 
         setTimeout(() => {
           dispatch(hideAlert())
         }, 3000)
-      } else {
-        navigate('/tickets')
-      }
+      } else navigate('/tickets')
     }
   }
 

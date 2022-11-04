@@ -1,8 +1,5 @@
-import React from 'react'
-import { Form /* , Sidebar */ } from 'rsuite'
-import TicketItem from '../components/TicketItem'
-import TicketList from '../components/TicketList'
-import { FLIGHTS } from '../data/Flights'
+import { Form } from 'rsuite'
+import FlightsList from '../components/FlightsList'
 
 /*
     <Form>
@@ -23,7 +20,7 @@ import { FLIGHTS } from '../data/Flights'
  */
 
 const Tickets = () => {
-  const flights = FLIGHTS /* .filter(
+  /* .filter(
     f =>
       f.origin_id === origin &&
       f.destination_id === destination &&
@@ -81,13 +78,7 @@ const Tickets = () => {
             block
           />
         </Sidebar> */}
-      {/* <Container> */}
-        <TicketList>
-          {flights.map(flight => (
-            <TicketItem key={flight.id} flight={flight} />
-          ))}
-        </TicketList>
-      {/* </Container> */}
+      <FlightsList />
     </Form>
   )
 }

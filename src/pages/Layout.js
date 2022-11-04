@@ -1,6 +1,6 @@
 import React from 'react'
 import './Layout.css'
-import { Container, Content, FlexboxGrid, Header/* , Steps */ } from 'rsuite'
+import { Container, Content, FlexboxGrid, Header, Steps } from 'rsuite'
 import { Outlet } from 'react-router-dom'
 
 const Layout = () => {
@@ -12,12 +12,12 @@ const Layout = () => {
       <Content>
         <FlexboxGrid justify='center'>
           <FlexboxGrid.Item colspan={20} style={{ marginBottom: '50px' }}>
-            {/* <Steps current={1}>
-              <Steps.Item title='Finished' />
-              <Steps.Item title='In progress' />
-              <Steps.Item title='Waiting' />
-              <Steps.Item title='Waiting' />
-            </Steps> */}
+            <Steps current={0}>
+              <Steps.Item title='Flight' />
+              <Steps.Item title='Tickets' />
+              <Steps.Item title='Passengers' />
+              <Steps.Item title='Overview' />
+            </Steps>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item>
             <Outlet />

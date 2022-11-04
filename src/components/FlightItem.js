@@ -39,7 +39,7 @@ const styleCenter = {
 //   fontWeight: 500
 // }
 
-const TicketItem = ({ flight, ...props }) => {
+const FlightItem = ({ flight, ...props }) => {
   const dispatch = useDispatch()
   const { tickets, returnDate } = useSelector(s => s)
 
@@ -53,21 +53,6 @@ const TicketItem = ({ flight, ...props }) => {
     }
   }
 
-  /**
-   * {
-    id: '29a7d484-89ec-400c-a181-89b82ba1b0b2',
-    origin_id: '8ecd3a95-d065-4ddc-88d8-129ff49e2172',
-    destination_id: 'cd7ff342-18a5-4d9b-bb82-b6060436fc18',
-    layover_id: null,
-    airline_name: 'Nisi Sem Semper LLP',
-    departure_date: '2022-01-10T07:33:53.000Z',
-    arrival_date: '2022-09-24T20:20:49.000Z',
-    distance: 390,
-    max_capacity: 70,
-    actual_capacity: 39
-  }
-   */
-
   return (
     <List.Item style={{ padding: '10px' }} className='ticket'>
       <FlexboxGrid
@@ -80,16 +65,19 @@ const TicketItem = ({ flight, ...props }) => {
       >
         <FlexboxGrid.Item colspan={22}>
           <FlexboxGrid style={styleCenter}>
-            <FlexboxGrid.Item colspan={8}>{flight.origin_id}</FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={8}>
+              {console.log(flight)}
+              {flight.origin_id.city}
+            </FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={2}>
-              {toTimeString(new Date(flight.departure_date))}
+              {toTimeString(new Date(flight.departureDate))}
             </FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={2}>{'------>'}</FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={2}>
-              {toTimeString(new Date(flight.arrival_date))}
+              {toTimeString(new Date(flight.arrivalDate))}
             </FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={8}>
-              {flight.destination_id}
+              {flight.destination_id.city}
             </FlexboxGrid.Item>
             {/* <FlexboxGrid.Item>{`Layovers: ${flight.layover_id}`}</FlexboxGrid.Item> */}
           </FlexboxGrid>
@@ -121,8 +109,8 @@ const TicketItem = ({ flight, ...props }) => {
   )
 }
 
-TicketItem.propTypes = {
+FlightItem.propTypes = {
   flight: PropTypes.object
 }
 
-export default TicketItem
+export default FlightItem
