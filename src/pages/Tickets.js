@@ -1,5 +1,8 @@
-import { Form } from 'rsuite'
+import { useDispatch } from 'react-redux'
+import { FlexboxGrid } from 'rsuite'
+import FlightFilters from '../components/FlightFilters'
 import FlightsList from '../components/FlightsList'
+import { setStep } from '../reducers/stepReducer'
 
 /*
     <Form>
@@ -20,27 +23,14 @@ import FlightsList from '../components/FlightsList'
  */
 
 const Tickets = () => {
+  const dispatch = useDispatch()
+  dispatch(setStep(1))
   /* .filter(
     f =>
       f.origin_id === origin &&
       f.destination_id === destination &&
       new Date(f.departure_date) === new Date(departureDate)
   ) */
-
-  // const scaleFilters = [
-  //   {
-  //     label: '0',
-  //     value: 'noScales'
-  //   },
-  //   {
-  //     label: '1',
-  //     value: 'oneScale'
-  //   },
-  //   {
-  //     label: '2',
-  //     value: 'twoScales '
-  //   }
-  // ]
 
   // const airlines = flights.map(flight => flight.airline_name)
 
@@ -50,36 +40,26 @@ const Tickets = () => {
   // }))
 
   return (
-    <Form
+    <FlexboxGrid
       style={{
-        borderRadius: '10px',
-        width: '75vw',
-        minHeight: '80vh',
-        boxShadow: '0 0 50px rgba(0, 0, 0, 0.5)'
+        width: '75vw'
       }}
     >
-      {/* <Sidebar style={{ marginRight: '20px' }}>
-          <CheckPicker
-            onChange={(value, event) => {
-              // console.log(value)
-            }}
-            searchable={false}
-            data={scaleFilters}
-            placeholder='Scales'
-            block
-          />
-          <CheckPicker
-            onChange={value => {
-              // console.log(value)
-            }}
-            searchable={false}
-            data={airlineFilter}
-            placeholder='Airline name'
-            block
-          />
-        </Sidebar> */}
-      <FlightsList />
-    </Form>
+      <FlexboxGrid.Item colspan={4}>
+        <FlightFilters />
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item colspan={20}>
+        <FlightsList />
+      </FlexboxGrid.Item>
+    </FlexboxGrid>
+    // <Form
+    //   style={{
+    //     width: '75vw'
+    //   }}
+    // >
+    //   {/*  */}
+    //   <FlightsList />
+    // </Form>
   )
 }
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { setAlert, hideAlert } from '../reducers/alertReducer'
 import Notification from '../components/Notification'
 import TravelInfoForm from '../components/TravelInfoForm'
+import { setStep } from '../reducers/stepReducer'
 
 const Home = () => {
   const { alert, origin, destination, dates } = useSelector(s => s)
@@ -25,16 +26,15 @@ const Home = () => {
       }, 3000)
     } else {
       if (origin === destination) {
-        dispatch(
-          setAlert(
-            'Origin and destination can\'t be the same'
-          )
-        )
+        dispatch(setAlert("Origin and destination can't be the same"))
 
         setTimeout(() => {
           dispatch(hideAlert())
         }, 3000)
-      } else navigate('/tickets')
+      } else {
+        dispatch(setStep(1))
+        navigate('/tickets')
+      }
     }
   }
 

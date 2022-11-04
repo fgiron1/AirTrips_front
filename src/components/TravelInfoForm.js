@@ -44,10 +44,10 @@ const TravelInfoForm = props => {
       <FlexboxGrid>
         <FlexboxGrid.Item colspan={24}>
           <RadioGroup name='oneWayFlight' inline>
-            <Radio value={false} onChange={value => setOneWayFlight(value)}>
+            <Radio value={false} onChange={value => setOneWayFlight(value)} id='round-trip-radio'>
               Round trip
             </Radio>
-            <Radio value={true} onChange={value => setOneWayFlight(value)}>
+            <Radio value={true} onChange={value => setOneWayFlight(value)} id='one-way-radio'>
               One way
             </Radio>
           </RadioGroup>
@@ -61,6 +61,7 @@ const TravelInfoForm = props => {
                   controlId='origin'
                   size='lg'
                   placeholder='Origin'
+                  id='origin-input'
                   block
                 />
               </Col>
@@ -70,6 +71,7 @@ const TravelInfoForm = props => {
                   controlId='destination'
                   size='lg'
                   placeholder='Destination'
+                  id='destination-id'
                   block
                 />
               </Col>
@@ -77,6 +79,7 @@ const TravelInfoForm = props => {
                 {// eslint-disable-next-line multiline-ternary
                 oneWayFlight ? (
                   <DatePicker
+                  id='date-picker'
                     onChange={handleDateChange}
                     cleanable={false}
                     size='lg'
@@ -86,6 +89,7 @@ const TravelInfoForm = props => {
                   />
                 ) : (
                   <DateRangePicker
+                  id='date-range-picker'
                     onChange={handleDateChange}
                     cleanable={false}
                     size='lg'
@@ -100,7 +104,7 @@ const TravelInfoForm = props => {
           </Grid>
         </FlexboxGrid.Item>
         <FlexboxGrid.Item colspan={24}>
-          <Button type='submit' appearance='primary'>
+          <Button type='submit' appearance='primary' id='flight-data-submit'>
             Search <AngleRightIcon />
           </Button>
         </FlexboxGrid.Item>

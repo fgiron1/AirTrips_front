@@ -1,6 +1,6 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
-import { Button, FlexboxGrid, List } from 'rsuite'
+import { Button, FlexboxGrid, List, Panel } from 'rsuite'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOutboundTicket } from '../reducers/ticketsReducer'
 
@@ -54,58 +54,59 @@ const FlightItem = ({ flight, ...props }) => {
   }
 
   return (
-    <List.Item style={{ padding: '10px' }} className='ticket'>
-      <FlexboxGrid
-        className='ticket-data'
-        style={{
-          height: '50px',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <FlexboxGrid.Item colspan={22}>
-          <FlexboxGrid style={styleCenter}>
-            <FlexboxGrid.Item colspan={8}>
-              {console.log(flight)}
-              {flight.origin_id.city}
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={2}>
-              {toTimeString(new Date(flight.departureDate))}
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={2}>{'------>'}</FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={2}>
-              {toTimeString(new Date(flight.arrivalDate))}
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={8}>
-              {flight.destination_id.city}
-            </FlexboxGrid.Item>
-            {/* <FlexboxGrid.Item>{`Layovers: ${flight.layover_id}`}</FlexboxGrid.Item> */}
-          </FlexboxGrid>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={2}>
-          <FlexboxGrid
-            className='ticket-button'
-            style={{
-              height: '50px',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Button
-              appearance='primary'
-              value={flight.id}
-              onClick={handleClick}
+    <Panel bordered shadow style={{ marginBottom: '10px' }}>
+      <List.Item style={{ padding: '10px' }} className='ticket'>
+        <FlexboxGrid
+          className='ticket-data'
+          style={{
+            height: '50px',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <FlexboxGrid.Item colspan={22}>
+            <FlexboxGrid style={styleCenter}>
+              <FlexboxGrid.Item colspan={8}>
+                {flight.origin_id.city}
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={2}>
+                {toTimeString(new Date(flight.departureDate))}
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={2}>{'------>'}</FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={2}>
+                {toTimeString(new Date(flight.arrivalDate))}
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={8}>
+                {flight.destination_id.city}
+              </FlexboxGrid.Item>
+              {/* <FlexboxGrid.Item>{`Layovers: ${flight.layover_id}`}</FlexboxGrid.Item> */}
+            </FlexboxGrid>
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={2}>
+            <FlexboxGrid
+              className='ticket-button'
+              style={{
+                height: '50px',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
             >
-              Select
-            </Button>
-          </FlexboxGrid>
-        </FlexboxGrid.Item>
-      </FlexboxGrid>
+              <Button
+                appearance='primary'
+                value={flight.id}
+                onClick={handleClick}
+              >
+                Select
+              </Button>
+            </FlexboxGrid>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
 
-      {/* <FlexboxGrid.Item colspan={2}> */}
+        {/* <FlexboxGrid.Item colspan={2}> */}
 
-      {/* </FlexboxGrid.Item> */}
-    </List.Item>
+        {/* </FlexboxGrid.Item> */}
+      </List.Item>
+    </Panel>
   )
 }
 
