@@ -1,104 +1,61 @@
-/* eslint-disable no-debugger */
-/* eslint-disable indent */
+import './TravelForm.css'
 import { useState } from 'react'
-import { useField } from '../hooks/useField'
-import {
-  Button,
-  Col,
-  DatePicker,
-  DateRangePicker,
-  Form,
-  Schema,
-  Grid,
-  Radio,
-  RadioGroup,
-  Row
-} from 'rsuite'
-import { startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth } from 'date-fns'
-import CountrySelect from './CountrySelect'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Col, Form, Grid, Radio, RadioGroup, Row } from 'rsuite'
+import CountryPicker from './CountryPicker'
 import AngleRightIcon from '@rsuite/icons/legacy/ArrowRightLine'
+import { CALENDAR_PREDEFINED_RANGES } from '../data/CalendarPredefinedRanges'
+import CustomDatePicker from './CustomDatePicker'
+import CustomDateRangePicker from './CustomDateRangePicker'
+import { setDepartureDate } from '../reducers/departureDateReducer'
+import { resetReturnDate, setReturnDate } from '../reducers/returnDateReducer'
+import { setOrigin } from '../reducers/originReducer'
+import { setDestination } from '../reducers/destinationReducer'
 
-const predefinedRanges = [
-  {
-    label: 'Today',
-    value: [new Date(), new Date()],
-    appearance: 'default'
-  },
-  {
-    label: 'This week',
-    value: [startOfWeek(new Date()), endOfWeek(new Date())],
-    appearance: 'default'
-  },
-  {
-    label: 'This month',
-    value: [startOfMonth(new Date()), endOfMonth(new Date())],
-    appearance: 'default'
-  },
-  {
-    label: 'Next week',
-    closeOverlay: false,
-    value: value => {
-      const [start = new Date()] = value || []
-      return [
-        addDays(startOfWeek(start, { weekStartsOn: 0 }), 7),
-        addDays(endOfWeek(start, { weekStartsOn: 0 }), 7)
-      ]
-    },
-    appearance: 'default'
-  }
-]
-
-const model = Schema.Model({
-  origin: Schema.Types.StringType().isRequired('Origin is required.'),
-  destination: Schema.Types.StringType().isRequired('Destination is required.')
-})
-
-const TravelForm = () => {
+const TravelForm = ({ ...props }) => {
   const [oneWayFlight, setOneWayFlight] = useState(false)
-  const origin = useField()
-  const destination = useField()
-  const [date, setDate] = useState()
 
-  const handleSubmit = e => {
-    console.log({ origin, destination, date })
-  }
+  const dispatch = useDispatch()
+  const { /* origin, */ destination, departureDate, returnDate } = useSelector(
+    s => s
+  )
 
-  const handleTypeOfFlightChange = val => {
-    if (date !== undefined) {
-      if (Array.isArray(date)) {
-        setDate(date[0])
-      } else {
-        setDate([date, new Date()])
-      }
+  const handleFlightTypeChange = value => {
+    if (returnDate === '') {
+      dispatch(setReturnDate(departureDate))
     }
-    setOneWayFlight(val)
+    setOneWayFlight(value)
   }
 
-  const handleDateChange = val => {
-    setDate(val)
+  const handleOriginChange = value => {
+    console.log(value)
+    dispatch(setOrigin(value))
+  }
+
+  const handleDestinationChange = newDestination => {
+    dispatch(setDestination(newDestination))
+  }
+
+  const handleDateChange = newDate => {
+    if (Array.isArray(newDate)) {
+      dispatch(setDepartureDate(newDate[0].toISOString()))
+      dispatch(setReturnDate(newDate[1].toISOString()))
+    } else {
+      dispatch(setDepartureDate(newDate.toISOString()))
+      dispatch(resetReturnDate())
+    }
   }
 
   return (
-    <Form
-      layout='horizontal'
-      model={model}
-      style={{
-        marginTop: '50px',
-        width: '75vw',
-        borderRadius: '5px',
-        padding: '10px',
-        boxShadow: '0 0 50px rgba(0, 0, 0, 0.5)'
-      }}
-      onSubmit={handleSubmit}
-    >
+    <Form {...props}>
       <Grid fluid>
         {/* Radio Buttons */}
         <Row>
           <RadioGroup name='oneWayFlight' inline>
-            <Radio value={false} onChange={handleTypeOfFlightChange}>
+            <Radio value={false} onChange={handleFlightTypeChange}>
               Round trip
             </Radio>
-            <Radio value={true} onChange={handleTypeOfFlightChange}>
+            <Radio value={true} onChange={handleFlightTypeChange}>
               One way
             </Radio>
           </RadioGroup>
@@ -106,39 +63,44 @@ const TravelForm = () => {
         {/* Flights data */}
         <Row>
           <Col xs={8}>
-            <Form.Group controlId='origin'>
-              <CountrySelect size='lg' placeholder='Origin' {...origin} />
-            </Form.Group>
+            <CountryPicker
+              onChange={handleOriginChange}
+              controlId='origin'
+              size='lg'
+              placeholder='Origin'
+              block
+            />
           </Col>
           <Col xs={8}>
-            <Form.Group controlId='destination'>
-              <CountrySelect
-                size='lg'
-                placeholder='Destination'
-                {...destination}
-              />
-            </Form.Group>
+            <CountryPicker
+              onSelect={handleDestinationChange}
+              controlId='destination'
+              size='lg'
+              placeholder='Destination'
+              block
+              value={destination}
+            />
           </Col>
           <Col xs={8}>
             <Form.Group controlId='date'>
               {// eslint-disable-next-line multiline-ternary
               oneWayFlight ? (
-                <DatePicker
-                  value={date}
+                <CustomDatePicker
+                  value={[departureDate, returnDate]}
                   onChange={handleDateChange}
                   size='lg'
                   appearance='default'
                   placeholder='YYYY-MM-DD'
-                  block
+                  block={true}
                 />
               ) : (
-                <DateRangePicker
-                  value={date}
+                <CustomDateRangePicker
+                  value={[departureDate, returnDate]}
                   onChange={handleDateChange}
                   size='lg'
                   appearance='default'
                   placeholder='YYYY-MM-DD ~ YYY-MM-DD'
-                  ranges={predefinedRanges}
+                  ranges={CALENDAR_PREDEFINED_RANGES}
                   block
                 />
               )}

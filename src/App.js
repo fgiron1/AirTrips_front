@@ -1,22 +1,24 @@
-import { Container, Header, Content, FlexboxGrid } from 'rsuite'
-import FlexboxGridItem from 'rsuite/esm/FlexboxGrid/FlexboxGridItem'
 import './App.css'
-import TravelForm from './components/TravelForm'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './pages/Layout'
+import Home from './pages/Home'
+import Tickets from './pages/Tickets'
+import Test from './pages/Test'
 
 const App = () => {
   return (
-    <Container>
-      <Header style={{ marginTop: '10px', textAlign: 'center' }}>
-        <h1>AirTrips</h1>
-      </Header>
-      <Content>
-        <FlexboxGrid justify='center'>
-          <FlexboxGridItem>
-            <TravelForm />
-          </FlexboxGridItem>
-        </FlexboxGrid>
-      </Content>
-    </Container>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path='tickets' element={<Tickets />} />
+          <Route path='test' element={<Test />} />
+          {/* <Route path='blogs' element={<Blogs />} />
+          <Route path='contact' element={<Contact />} />
+          <Route path='*' element={<NoPage />} /> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

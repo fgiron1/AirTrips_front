@@ -1,0 +1,14 @@
+#notification {
+    width: 280px;
+    overflow: visible;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 5px;
+    left: calc(50vw - 140px);
+    padding: 12px 20px;
+    transition: all 2s;
+}
