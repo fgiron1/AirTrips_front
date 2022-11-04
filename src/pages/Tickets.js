@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useDispatch } from 'react-redux'
 import { FlexboxGrid } from 'rsuite'
 import FlightFilters from '../components/FlightFilters'
@@ -32,34 +33,19 @@ const Tickets = () => {
       new Date(f.departure_date) === new Date(departureDate)
   ) */
 
-  // const airlines = flights.map(flight => flight.airline_name)
-
-  // const airlineFilter = airlines.map(airline => ({
-  //   label: airline,
-  //   value: airline
-  // }))
-
   return (
     <FlexboxGrid
       style={{
         width: '75vw'
       }}
     >
-      <FlexboxGrid.Item colspan={4}>
+      <FlexboxGrid.Item colspan={24} style={{ marginBottom: '20px' }}>
         <FlightFilters />
       </FlexboxGrid.Item>
-      <FlexboxGrid.Item colspan={20}>
+      <FlexboxGrid.Item colspan={24}>
         <FlightsList />
       </FlexboxGrid.Item>
     </FlexboxGrid>
-    // <Form
-    //   style={{
-    //     width: '75vw'
-    //   }}
-    // >
-    //   {/*  */}
-    //   <FlightsList />
-    // </Form>
   )
 }
 

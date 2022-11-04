@@ -1,6 +1,6 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
-import { Button, FlexboxGrid, List, Panel } from 'rsuite'
+import { Button, FlexboxGrid, List } from 'rsuite'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOutboundTicket } from '../reducers/ticketsReducer'
 
@@ -21,12 +21,12 @@ const styleCenter = {
   fontSize: '16px'
 }
 
-// const slimText = {
-//   fontSize: '0.666em',
-//   color: '#97969B',
-//   fontWeight: 'lighter',
-//   paddingBottom: 5
-// }
+const slimText = {
+  fontSize: '0.666em',
+  color: '#97969B',
+  fontWeight: 'lighter',
+  paddingBottom: 5
+}
 
 // const titleStyle = {
 //   paddingBottom: 5,
@@ -54,59 +54,54 @@ const FlightItem = ({ flight, ...props }) => {
   }
 
   return (
-    <Panel bordered shadow style={{ marginBottom: '10px' }}>
-      <List.Item style={{ padding: '10px' }} className='ticket'>
-        <FlexboxGrid
-          className='ticket-data'
-          style={{
-            height: '50px',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <FlexboxGrid.Item colspan={22}>
-            <FlexboxGrid style={styleCenter}>
-              <FlexboxGrid.Item colspan={8}>
-                {flight.origin_id.city}
-              </FlexboxGrid.Item>
-              <FlexboxGrid.Item colspan={2}>
-                {toTimeString(new Date(flight.departureDate))}
-              </FlexboxGrid.Item>
-              <FlexboxGrid.Item colspan={2}>{'------>'}</FlexboxGrid.Item>
-              <FlexboxGrid.Item colspan={2}>
-                {toTimeString(new Date(flight.arrivalDate))}
-              </FlexboxGrid.Item>
-              <FlexboxGrid.Item colspan={8}>
-                {flight.destination_id.city}
-              </FlexboxGrid.Item>
-              {/* <FlexboxGrid.Item>{`Layovers: ${flight.layover_id}`}</FlexboxGrid.Item> */}
-            </FlexboxGrid>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={2}>
-            <FlexboxGrid
-              className='ticket-button'
-              style={{
-                height: '50px',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
+    <List.Item style={{ padding: '10px' }} className='ticket'>
+      <FlexboxGrid
+        className='ticket-data'
+        style={{
+          height: '50px',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <FlexboxGrid.Item colspan={22}>
+          <FlexboxGrid style={styleCenter}>
+            <FlexboxGrid.Item colspan={8}>
+              {flight.origin_id.city}
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={2}>
+              {toTimeString(new Date(flight.departureDate))}
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={2} style={slimText}>
+              {'>>>>>>>>>>'}
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={2}>
+              {toTimeString(new Date(flight.arrivalDate))}
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={8}>
+              {flight.destination_id.city}
+            </FlexboxGrid.Item>
+          </FlexboxGrid>
+        </FlexboxGrid.Item>
+        <FlexboxGrid.Item colspan={2}>
+          <FlexboxGrid
+            className='ticket-button'
+            style={{
+              height: '50px',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Button
+              appearance='primary'
+              value={flight.id}
+              onClick={handleClick}
             >
-              <Button
-                appearance='primary'
-                value={flight.id}
-                onClick={handleClick}
-              >
-                Select
-              </Button>
-            </FlexboxGrid>
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
-
-        {/* <FlexboxGrid.Item colspan={2}> */}
-
-        {/* </FlexboxGrid.Item> */}
-      </List.Item>
-    </Panel>
+              Select
+            </Button>
+          </FlexboxGrid>
+        </FlexboxGrid.Item>
+      </FlexboxGrid>
+    </List.Item>
   )
 }
 
